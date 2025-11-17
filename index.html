@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Semangat Pejuang PMS-ku!💖</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&family=Pacifico&family=Quicksand:wght@300;500&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --pink1: #f8b0c6;
+      --pink2: #d95f82;
+      --white: #fff;
+      --blur-bg: rgba(255,255,255,0.06);
+      --pad: clamp(16px, 4vw, 36px);
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    html,body{
+      height:100%;
+      background:linear-gradient(135deg,var(--pink1),var(--pink2));
+      font-family:'Poppins',sans-serif;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      -webkit-tap-highlight-color:transparent;
+      padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+      overflow:hidden;
+    }
+
+    .wrap{
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:var(--pad);
+      position:relative;
+      overflow:hidden;
+    }
+
+    /* background cover image (auto-resize & center) */
+    .bg-cover{
+      position:absolute;
+      inset:0;
+      z-index:2;
+      pointer-events:none;
+      background-position:center;
+      background-size:cover;
+      background-repeat:no-repeat;
+      opacity:0.18; /* subtle */
+      filter:blur(4px) saturate(0.95) contrast(0.98);
+    }
+
+    /* Intro */
+    .intro{
+      position:relative;
+      z-index:30;
+      width:100%;
+      max-width:720px;
+      background:var(--blur-bg);
+      backdrop-filter:blur(8px);
+      border-radius:20px;
+      padding:clamp(20px,5vw,36px);
+      text-align:center;
+      box-shadow:0 8px 30px rgba(0,0,0,0.18);
+      transition:opacity 0.4s ease, transform 0.4s ease;
+    }
+    .title{
+      font-family:'Pacifico',cursive;
+      color:var(--white);
+      font-size:clamp(1.6rem,3vw,2.4rem);
+      margin-bottom:.5em;
+    }
+    .subtitle{
+      color:rgba(255,255,255,0.95);
+      font-size:clamp(.9rem,2vw,1.2rem);
+      margin-bottom:1.4em;
+      line-height:1.5;
+    }
+    .start-btn{
+      appearance:none;border:0;padding:.7em 2em;border-radius:999px;font-weight:600;
+      background:linear-gradient(90deg,rgba(255,255,255,0.18),rgba(255,255,255,0.08));
+      color:var(--white);cursor:pointer;box-shadow:0 6px 18px rgba(0,0,0,0.2);
+      font-size:clamp(.9rem,2vw,1.1rem);transition:transform .25s ease,box-shadow .25s ease;
+    }
+    .start-btn:hover{transform:scale(1.05);box-shadow:0 8px 20px rgba(0,0,0,0.25)}
+
+    /* Slide area */
+    .stage{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none}
+    .card{
+      width:90%;max-width:760px;background:linear-gradient(180deg,rgba(255,255,255,0.06),rgba(255,255,255,0.02));
+      border-radius:18px;padding:clamp(20px,5vw,34px);text-align:center;color:var(--white);
+      box-shadow:0 18px 40px rgba(0,0,0,0.25);opacity:0;transform:translateY(20px);
+      transition:all 600ms cubic-bezier(.22,.9,.28,1);pointer-events:auto;z-index:30;
+    }
+    .card.show{opacity:1;transform:translateY(0)}
+    .msg{font-family:'Quicksand',sans-serif;font-size:clamp(1rem,2.2vw,1.25rem);line-height:1.6;margin:10px 0;transition:opacity .4s ease}
+    .hint{margin-top:1em;color:rgba(255,255,255,0.9);font-style:italic;font-size:clamp(.85rem,1.8vw,1rem)}
+
+    .action{margin-top:1.2em;display:flex;gap:10px;justify-content:center}
+    .next-btn{padding:.5em 1.2em;border-radius:999px;border:0;background:rgba(255,255,255,0.08);color:var(--white);cursor:pointer;font-size:clamp(.85rem,2vw,1rem);transition:background .25s}
+    .next-btn:hover{background:rgba(255,255,255,0.2)}
+
+    /* hearts */
+    .hearts{position:absolute;inset:0;pointer-events:none;z-index:10}
+    .heart{position:absolute;font-size:18px;opacity:0.95;transform:translateY(-20vh);animation:fall linear forwards}
+    @keyframes fall{to{transform:translateY(120vh) rotate(360deg);opacity:0}}
+
+    /* Confetti */
+    .confetti-canvas{position:absolute;inset:0;z-index:40;pointer-events:none}
+
+    @media (max-width:480px){
+      .start-btn{padding:.6em 1.6em}
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <!-- background cover image (use drive "uc?export=view&id=" to embed the file) -->
+    <div class="bg-cover" id="bgCover" style="background-image:url('https://drive.google.com/uc?export=view&id=1MjiQ4BREQmcnJmAqBB0zMTeimHZH2LDb')"></div>
+
+    <div class="intro" id="intro">
+      <h1 class="title">Hey, Semangat Pejuang PMS-ku! Dhilaa💖</h1>
+      <p class="subtitle">Aku tahu kamu lagi berjuang keras — klik tombol buat lihat pesanku</p>
+      <button class="start-btn" id="startBtn" aria-controls="card">Mulai</button>
+    </div>
+
+    <div class="stage" aria-hidden="true">
+      <div class="card" id="card" role="region" aria-live="polite">
+        <div class="msg" id="msg">...</div>
+        <div class="hint">klik untuk lanjut ➝</div>
+        <div class="action" style="display:none" id="controls">
+          <button class="next-btn" id="prevBtn" aria-label="Sebelumnya">‹ Sebelumnya</button>
+          <button class="next-btn" id="nextBtn" aria-label="Berikutnya">Berikutnya ›</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="hearts" id="hearts" aria-hidden="true"></div>
+    <canvas class="confetti-canvas" id="confetti" aria-hidden="true"></canvas>
+  </div>
+
+  <!-- background music (may be blocked on some browsers) -->
+  <iframe id="bgm" width="0" height="0" src="https://www.youtube.com/embed/szWX1HhMZvI?autoplay=1&loop=1&playlist=szWX1HhMZvI&controls=0&mute=0" allow="autoplay" frameborder="0" style="display:none"></iframe>
+
+  <script>
+  const slides = [
+	"Hey Sayangkuu, aku tahu hari ini berat banget buat kamu. Aku ikut merasakan sakitnya dari sini 🥺",
+	"Meskipun kita jauh, pikiranku selalu ada di sana, di sampingmu. Aku ga pernah jauh sayang 😉",
+	"Gapapa ya Sayang. Kalo emg sakit, nangis itu wajar banget. Kamu boleh rewel, marah, atau lemas hari ini 👑",
+	"Fokus utama kamu sekarang cuma satu: Istirahat Total. Kamu sudah berjuang keras menghadapi rasa sakit itu. You deserve a break! 💪",
+	"Aku sudah siapin beberapa kata2 random dan gombalan biar mood kamu naik sedikit. Tapi, sebelum itu...",
+	"Tolong ya Sayang, jaga baik2 makanan kamu hari ini. Jangan beli yang aneh2 🙏",
+	"Aku tahu kamu suka yang pedas, tapi cabai dan makanan berminyak itu bisa bikin kram perut makin parah, lho! 🌶️🙅‍♀️",
+	"Ganti pedas dengan yang anget dan menenangkan yaa, Ini buat perut kamu sayang 🍵🥣",
+	"Please, sebisa mungkin hindari dulu yang junk food ya. Badan kamu butuh nutrisi terbaik saat ini, bukan yang bikin begah 🍓🍎",
+	"Makan yang teratur ya Sayang. Jangan pernah skip makan. Perut kosong bikin mood kamu makin amburadul 🍚❤️",
+	"Aku suka semua versi kamu, termasuk versi yang lagi manja dan rewel ini. Aku di sini untuk jadi Support kamu 😊",
+	"Jangan cemberut terus ya Sayang, nanti aku transfer ketawa online biar kamu senyum lagi 🤣",
+	"Kalau ada hal kecil aja yang kamu butuh misal mau cerita, langsung chat aku sayang. Aku siap bantu cari cara dari sini 📲",
+	"Aku tahu kamu itu kuat, pejuang sejati. Tapi bahkan pejuang pun butuh istirahat. Aku bangga sama kamu. 💖",
+	"Cinta aku ke kamu itu kayak air, ngga bakal habis meskipun kamu lagi bad mood. Selalu mengalir! 🌊💞",
+	"Kamu tuh kayak painkiller buat hariku, bikin semua rasa sakit dan stress hilang! ✨",
+	"Kamu tuh kayak bintang, jauh tapi selalu jadi alasan aku liat langit. Dan malam ini langitnya buat kamu. 🌙✨",
+	"Dunia boleh muter, tapi pikiran aku tetep berputar di kamu. ngga peduli kamu lagi PMS atau ngga 😋💞",
+	"Jarak ini cuma angka, tapi rasa kangenku nyata banget. Aku harap peluk onlineku sampai di sana ya 🥺🌏",
+	"Pokoknya meskipun jauh, kamu tetep jadi rumah terhangat buat aku. Segera pulih ya, my amazing girl! 🏡💖",
+	"Nanti pas aku pulang, aku call ya. Kalau kamu tidur, aku drop voice note aja biar kamu dengar suaraku 📞",
+	"Kamu jangan pernah berubah yaa, kecuali jadi makin sayang sama aku. Cepet sembuh, babe. 💗",
+	"Aku bakal tetep di sini, nyemangatin kamu terus...",
+	"...dan terus sayang sama kamu, di hari paling berat sekalipun 💞",
+	"Love you always, Babe - From yourboys💝"
+  ];
+    const intro = document.getElementById('intro');
+    const startBtn = document.getElementById('startBtn');
+    const card = document.getElementById('card');
+    const msg = document.getElementById('msg');
+    const heartsWrap = document.getElementById('hearts');
+    const confettiCanvas = document.getElementById('confetti');
+    const controls = document.getElementById('controls');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const cake = document.getElementById('cake');
+    const bgCover = document.getElementById('bgCover');
+
+    let idx = 0;
+
+    function showSlide(i){
+      msg.style.opacity = 0;
+      setTimeout(()=>{
+        msg.textContent = slides[i];
+        msg.style.opacity = 1;
+        if(i === slides.length - 1){
+          startConfetti();
+        }
+      }, 220);
+    }
+
+    startBtn.addEventListener('click', ()=>{
+      intro.style.opacity = 0;
+      intro.style.transform = 'scale(.96)';
+      setTimeout(()=> intro.style.display = 'none', 420);
+      card.classList.add('show');
+      showSlide(idx);
+      controls.style.display = 'flex';
+    });
+
+    // click to advance (except when clicking buttons)
+    document.body.addEventListener('click', (e)=>{
+      if ([startBtn, nextBtn, prevBtn].includes(e.target)) return;
+      if (intro.style.display !== 'none') return;
+      if (idx < slides.length - 1){ idx++; showSlide(idx); }
+    });
+
+    nextBtn.addEventListener('click', (e)=>{
+      e.stopPropagation();
+      if (idx < slides.length - 1) idx++, showSlide(idx);
+    });
+    prevBtn.addEventListener('click', (e)=>{
+      e.stopPropagation();
+      if (idx > 0) idx--, showSlide(idx);
+    });
+
+	// Hearts emission
+    function emitHeart(){
+      const el = document.createElement('div');
+      el.className = 'heart';
+      // Emotikon '🫂' (Pelukan) yang bermasalah diganti dengan '🧸' (Teddy Bear)
+      el.textContent = ['💖','✨','💐','🧸','☕','😴'][Math.floor(Math.random()*6)]; 
+      const size = 14 + Math.random()*28;
+      el.style.fontSize = size + 'px';
+      el.style.left = (Math.random()*100) + 'vw';
+      el.style.animationDuration = (3 + Math.random()*4) + 's';
+      heartsWrap.appendChild(el);
+      setTimeout(()=> el.remove(), 7500);
+    }
+    // Interval diperkecil (dari 700/400ms menjadi 500/250ms) agar lebih banyak muncul
+    let heartsIntervalId = setInterval(emitHeart, innerWidth < 480 ? 500 : 250);
+
+    // Confetti canvas
+    const ctx = confettiCanvas.getContext('2d');
+    let confettiParticles = [];
+    function resizeCanvas(){ confettiCanvas.width = innerWidth; confettiCanvas.height = innerHeight; }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    function makeConfetti(){
+      const colors = ['#fff','rgba(255,255,255,0.9)','rgba(255,240,240,0.95)'];
+      for (let i=0;i<80;i++){
+        confettiParticles.push({
+          x: Math.random() * confettiCanvas.width,
+          y: -Math.random() * confettiCanvas.height,
+          w: 6 + Math.random()*8,
+          h: 4 + Math.random()*6,
+          vx: (Math.random()-0.5)*2,
+          vy: 2 + Math.random()*4,
+          r: Math.random()*360,
+          color: colors[Math.floor(Math.random()*colors.length)],
+          life: 100 + Math.random()*100
+        });
+      }
+    }
+
+    function updateConfetti(){
+      ctx.clearRect(0,0,confettiCanvas.width,confettiCanvas.height);
+      confettiParticles.forEach((p,i)=>{
+        p.x += p.vx; p.y += p.vy; p.r += 4;
+        ctx.save(); ctx.translate(p.x,p.y); ctx.rotate(p.r*Math.PI/180);
+        ctx.fillStyle = p.color; ctx.fillRect(-p.w/2,-p.h/2,p.w,p.h); ctx.restore();
+        p.life--;
+        if (p.y > confettiCanvas.height + 50 || p.life < 0) confettiParticles.splice(i,1);
+      });
+    }
+
+    let confettiAnim = null;
+    function startConfetti(){
+      makeConfetti();
+      if (!confettiAnim) confettiAnim = setInterval(updateConfetti, 33);
+      setTimeout(()=> stopConfetti(), 6000);
+    }
+    function stopConfetti(){
+      if (confettiAnim){
+        clearInterval(confettiAnim);
+        confettiAnim = null;
+        confettiParticles = [];
+        ctx.clearRect(0,0,confettiCanvas.width,confettiCanvas.height);
+      }
+    }
+
+    // Balloons
+    function spawnBalloons(count){
+      const container = document.querySelector('.wrap');
+      for (let i=0;i<count;i++){
+        const b = document.createElement('div');
+        b.className = 'balloon';
+        b.style.left = (Math.random()*80 + 10) + 'vw';
+        // nice pastel gradient each balloon
+        const h = Math.floor(Math.random()*360);
+        b.style.background = `linear-gradient(180deg, hsl(${h} 75% 85% / .98), hsl(${(h+20)%360} 70% 70% / .95))`;
+        const dur = 4 + Math.random()*4;
+        b.style.animationDuration = dur + 's';
+        // slightly stagger vertical position using transform translateY to avoid all same start
+        b.style.transform = `translateY(${Math.random()*40}px)`;
+        container.appendChild(b);
+        // remove after animation done
+        setTimeout(()=> {
+          if (b && b.remove) b.remove();
+        }, (dur * 1000) + 800);
+      }
+    }
+
+    // keyboard nav
+    document.addEventListener('keydown', (e)=>{
+      if (intro.style.display !== 'none') return;
+      if (e.key === 'ArrowRight') { if (idx < slides.length - 1) { idx++; showSlide(idx); } }
+      if (e.key === 'ArrowLeft') { if (idx > 0) { idx--; showSlide(idx); } }
+      if (e.key === 'Escape') { /* optional: close card / show intro again */ }
+    });
+
+    // pause animations when tab hidden to save resources
+    document.addEventListener('visibilitychange', ()=>{
+      if (document.hidden){
+        clearInterval(heartsIntervalId);
+        if (confettiAnim) { clearInterval(confettiAnim); confettiAnim = null; }
+      } else {
+        heartsIntervalId = setInterval(emitHeart, innerWidth < 480 ? 700 : 400);
+        if (confettiParticles.length && !confettiAnim) confettiAnim = setInterval(updateConfetti, 33);
+      }
+    });
+
+    // Make sure cover stays crisp on different DPRs
+    (function adjustCoverOpacityForSmallScreens(){
+      if (innerWidth < 520) bgCover.style.opacity = 0.12;
+    })();
+
+    // Optional: pre-warm the background image (fastest reliable way)
+    const bgImg = new Image();
+    bgImg.src = bgCover.style.backgroundImage.replace(/url\(["']?/, '').replace(/["']?\)/, '');
+  </script>
+</body>
+</html>
